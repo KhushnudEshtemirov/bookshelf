@@ -12,11 +12,11 @@ const Homepage = () => {
   let [move, changeMove] = useState(0);
 
   const prevBtn = () => {
-    move == 0 ? changeMove(0) : changeMove(move + 1);
+    move === 0 ? changeMove(-2) : changeMove(move + 1);
   };
 
   const nextBtn = () => {
-    move < -1 ? changeMove(-2) : changeMove(move - 1);
+    move < -1 ? changeMove(0) : changeMove(move - 1);
   };
 
   return (
@@ -26,16 +26,13 @@ const Homepage = () => {
       <div className="books-container">
         <div
           className="books"
-          style={{ transform: `translateX(${move * 20}%)` }}
+          style={{ transform: `translateX(${move * 18}%)` }}
         >
-          {
-            (console.log(move),
-            book_data.map((book) => (
-              <div className="image" key={book.id}>
-                <img src={book.imgUrl} alt="books" />
-              </div>
-            )))
-          }
+          {book_data.slice(0, 18).map((book) => (
+            <div className="image" key={book.id}>
+              <img src={book.imgUrl} alt="books" />
+            </div>
+          ))}
         </div>
       </div>
       <Link to="/all-book">

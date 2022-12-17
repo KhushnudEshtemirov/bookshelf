@@ -69,6 +69,18 @@ export const book_data = [
   },
   {
     id: 18,
-    imgUrl: "https://i.ibb.co/4ZVy67C/2.png",
+    imgUrl: "https://i.ibb.co/5RgS3HB/21.png",
+  },
+  {
+    id: 19,
+    imgUrl: "https://i.ibb.co/j6nW3x0/20.png",
+  },
+  {
+    id: 20,
+    imgUrl: "https://i.ibb.co/7CG2qf4/2.png",
+  },
+  {
+    id: 21,
+    imgUrl: "https://i.ibb.co/6gLxV1p/19.png",
   },
 ];
