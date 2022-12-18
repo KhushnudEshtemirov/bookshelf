@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Avatar,
   Button,
@@ -8,19 +8,43 @@ import {
   Grid,
   Box,
   Typography,
+  FormControl,
+  InputLabel,
+  OutlinedInput,
+  InputAdornment,
+  IconButton,
 } from "@mui/material";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import VpnKeyIcon from "@mui/icons-material/VpnKey";
 
 import "./sign-in.scss";
 
 const SignIn = () => {
+  let [email, setEmail] = useState("");
+  let [password, setPassword] = useState("");
+
+  const [showPassword, setShowPassword] = useState(false);
+
+  const handleClickShowPassword = () => setShowPassword((show) => !show);
+
   const handleSubmit = (event) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
+
+    var myHeaders = new Headers();
+    myHeaders.append("email", email);
+    myHeaders.append("secret", password);
+
+    var requestOptions = {
+      method: "POST",
+      headers: myHeaders,
+      redirect: "follow",
+    };
+
+    fetch("https://no23.lavina.tech/signup", requestOptions)
+      .then((response) => response.text())
+      .then((result) => console.log(result))
+      .catch((error) => console.log("error", error));
   };
 
   return (
@@ -40,26 +64,39 @@ const SignIn = () => {
         <Typography component="h1" variant="h5">
           Sign in
         </Typography>
-        <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 2 }}>
+        <Box component="form" onSubmit={handleSubmit} sx={{ mt: 2 }}>
           <TextField
             margin="normal"
             required
             fullWidth
-            id="email2"
             label="Email Address"
             name="email"
             autoComplete="email"
+            onChange={(e) => setEmail(e.target.value)}
           />
-          <TextField
-            sx={{ mt: 3 }}
-            required
-            fullWidth
-            name="password"
-            label="Password"
-            type="password"
-            id="password2"
-            autoComplete="current-password"
-          />
+          <FormControl variant="outlined" fullWidth sx={{ mt: 3 }}>
+            <InputLabel htmlFor="outlined-adornment-password2">
+              Password *
+            </InputLabel>
+            <OutlinedInput
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              id="outlined-adornment-password2"
+              type={showPassword ? "text" : "password"}
+              endAdornment={
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label="toggle password visibility"
+                    onClick={handleClickShowPassword}
+                    edge="end"
+                  >
+                    {showPassword ? <VisibilityOff /> : <Visibility />}
+                  </IconButton>
+                </InputAdornment>
+              }
+              label="Password"
+            />
+          </FormControl>
           <Button
             type="submit"
             fullWidth
