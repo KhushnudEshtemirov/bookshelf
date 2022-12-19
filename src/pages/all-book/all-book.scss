@@ -1,8 +1,49 @@
 .all-book {
   padding: 30px 0;
+  position: relative;
+
+  .modal-window {
+    position: fixed;
+    width: 60vw;
+    height: 80vh;
+    background: rgb(255, 255, 255);
+    box-shadow: rgba(14, 30, 37, 0.12) 0px 2px 4px 0px, rgba(14, 30, 37, 0.32) 0px 2px 16px 0px;
+    z-index: 100;
+    left: 50%;
+    top: 50vh;
+    transform: translate(-50%, -52%) scale(0);
+    transition: 0.5s;
+
+    &.show-modal {
+      transform: translate(-50%, -52%) scale(1);
+    }
+  }
+
+  .add-icon {
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    transition: 0.3s;
+
+    &.active {
+      transform: rotate(45deg);
+      background: rgb(253, 0, 0);
+    }
+  }
 
   .margin-top {
     margin-top: 40px;
+
+    .delete-icon {
+      width: 30px;
+      height: 30px;
+      position: absolute;
+      background: transparent;
+      right: 17px;
+      bottom: 14px;
+      cursor: pointer;
+      z-index: 110;
+    }
 
     .show-more {
       margin-top: 40px;
@@ -15,6 +56,10 @@
   }
 
   .card-container {
+    &.delete {
+      display: none;
+    }
+
     &:hover {
       .image-container {
         img {
@@ -23,12 +68,64 @@
       }
     }
 
+    .status-items {
+      display: flex;
+      flex-direction: column;
+      position: absolute;
+      top: 40px;
+      right: 0;
+      z-index: 99;
+      box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+      background: #fff;
+      padding: 20px;
+      gap: 15px;
+      border-radius: 3px;
+      transform: translateX(120%);
+      transition: 0.5s;
+
+      &.show-status {
+        transform: translateX(0);
+      }
+
+      span {
+        font-size: 0.9rem;
+        cursor: pointer;
+      }
+    }
+
     .image-container {
       height: 380px;
       overflow: hidden;
+      position: relative;
   
       img {
         transition: 0.6s ease-in-out;
+      }
+
+      .status {
+        position: absolute;
+        top: 0;
+        right: 0;
+        text-align: center;
+
+        span {
+          padding: 5px 14px;
+          font-size: 0.8rem;
+          font-weight: 500;
+
+          &.new {
+            background: rgb(251, 255, 0);
+          }
+
+          &.reading {
+            background: rgb(17, 0, 255);
+            color: #fff;
+          }
+
+          &.finished {
+            background: rgb(60, 255, 0);
+          }
+        }
       }
     }
   }

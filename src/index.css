@@ -1,0 +1,17 @@
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 5px;
+  background: rgb(187, 187, 187);
+}
+
+::-webkit-scrollbar-track {
+  border-radius: 5px;
+  background: transparent;
+}
+
+body {
+  font-family: "Roboto";
+}

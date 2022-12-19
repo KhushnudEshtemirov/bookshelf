@@ -8,14 +8,43 @@ import {
   CardContent,
   CardActions,
   Button,
+  Fab,
+  CardHeader,
+  Avatar,
+  IconButton,
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
+import DeleteIcon from "@mui/icons-material/Delete";
+import { red } from "@mui/material/colors";
 
+import AddBook from "../../components/add-book/add-book";
 import { book_data } from "../homepage/books.data";
 
 import "./all-book.scss";
 
 const AllBook = () => {
+  const changeStatus = (e) => {
+    e.preventDefault();
+
+    let items = document.getElementsByClassName("status-items");
+    let status = document.querySelectorAll(".status");
+
+    items[e.target.id - 1].classList.toggle("show-status");
+    if (e.target.innerHTML === "New") {
+      status[e.target.id - 1].children[0].classList.value = "new";
+      status[e.target.id - 1].children[0].innerHTML = "New";
+    }
+    if (e.target.innerHTML === "Reading") {
+      status[e.target.id - 1].children[0].classList.value = "reading";
+      status[e.target.id - 1].children[0].innerHTML = "Reading";
+    }
+    if (e.target.innerHTML === "Finished") {
+      status[e.target.id - 1].children[0].classList.value = "finished";
+      status[e.target.id - 1].children[0].innerHTML = "Finished";
+    }
+  };
+
   let [item, improveItem] = useState(8);
   let numberOfBooks = book_data.length;
 
@@ -29,7 +58,7 @@ const AllBook = () => {
 
   var myHeaders = new Headers();
   myHeaders.append("Key", "khushnud007");
-  myHeaders.append("Sign", "3c1663354ce6922fea526d7a85838009");
+  myHeaders.append("Sign", "35b6f86048a2ed5ccb98107739abc746");
 
   var requestOptions = {
     method: "GET",
@@ -37,11 +66,25 @@ const AllBook = () => {
     redirect: "follow",
   };
 
+  let [modal, setModal] = useState(false);
+
+  const showModal = () => {
+    document.getElementsByClassName("add-icon")[0].classList.toggle("active");
+    setModal(!modal);
+  };
+
+  const deleteBook = (e) => {
+    let delBook = document.getElementsByClassName("card-container");
+    if (window.confirm("Are you sure to delete this book?!")) {
+      delBook[e.target.id - 1].classList.add("delete");
+    }
+  };
+
   useEffect(() => {
     let getBooks = async () => {
-      await fetch("https://no23.lavina.tech/books/book", requestOptions)
+      await fetch("https://no23.lavina.tech/books/a", requestOptions)
         .then((response) => response.json())
-        .then((result) => setResult(result.data[2].author))
+        .then((result) => setResult(result.data))
         .catch((error) => console.log("error", error));
     };
     getBooks();
@@ -49,10 +92,20 @@ const AllBook = () => {
 
   if (!books) return null;
 
-  console.log(books);
-
   return (
     <div className="all-book">
+      <Fab
+        color="primary"
+        aria-label="add"
+        className="add-icon"
+        title="Add New Book"
+        onClick={showModal}
+      >
+        <AddIcon />
+      </Fab>
+      <div className={`modal-window ${modal ? "show-modal" : ""}`}>
+        <AddBook />
+      </div>
       <main>
         <div>
           <Container maxWidth="sm">
@@ -67,9 +120,6 @@ const AllBook = () => {
               You can find here a book which you want, and you can read it
               without purchase. Good reading!!!
             </Typography>
-            <Button variant="contained" color="success" startIcon={<AddIcon />}>
-              Add Book
-            </Button>
           </Container>
           <Container maxWidth="xl" className="margin-top">
             <Grid container spacing={4}>
@@ -85,12 +135,50 @@ const AllBook = () => {
                   className="card-container"
                 >
                   <Card>
+                    <CardHeader
+                      avatar={
+                        <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
+                          <img
+                            src={book.author}
+                            alt="avatar"
+                            width="100%"
+                            height="100%"
+                          />
+                        </Avatar>
+                      }
+                      action={
+                        <IconButton
+                          aria-label="settings"
+                          title="Change Status"
+                          onClick={changeStatus}
+                          id={book.id}
+                        >
+                          <MoreVertIcon id={book.id} />
+                          <div className="status-items" id={book.id}>
+                            <span id={book.id}>New</span>
+                            <span id={book.id}>Reading</span>
+                            <span id={book.id}>Finished</span>
+                          </div>
+                        </IconButton>
+                      }
+                      title={books[book.id].author}
+                      subheader={books[book.id].published + " year"}
+                    />
                     <div className="image-container">
                       <CardMedia component="img" image={book.imgUrl} />
+                      <div className="status">
+                        {book.new ? <span className="new">New</span> : null}
+                        {book.reading ? (
+                          <span className="reading">Reading</span>
+                        ) : null}
+                        {book.finished ? (
+                          <span className="finished">Finished</span>
+                        ) : null}
+                      </div>
                     </div>
                     <CardContent>
                       <Typography gutterBottom variant="h5" component="div">
-                        Hello
+                        {books[book.id].title}
                       </Typography>
                       <Typography variant="body2" color="text.secondary">
                         Lizards are a widespread group of squamate reptiles,
@@ -98,9 +186,26 @@ const AllBook = () => {
                         except Antarctica
                       </Typography>
                     </CardContent>
-                    <CardActions>
+                    <CardActions
+                      sx={{
+                        position: "relative",
+                      }}
+                    >
                       <Button size="small">Read</Button>
                       <Button size="small">Share</Button>
+                      <IconButton
+                        id={book.id}
+                        onClick={deleteBook}
+                        className="delete-icon"
+                      ></IconButton>
+                      <DeleteIcon
+                        sx={{
+                          color: red[500],
+                          position: "absolute",
+                          right: "20px",
+                          bottom: "16px",
+                        }}
+                      />
                     </CardActions>
                   </Card>
                 </Grid>
