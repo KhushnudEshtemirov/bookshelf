@@ -134,3 +134,19 @@
     }
   }
 }
+
+@media (max-width: 680px) {
+  .all-book {
+    .modal-window {
+      width: 70vw;
+    }
+  }
+}
+
+@media (max-width: 500px) {
+  .all-book {
+    .modal-window {
+      width: 100vw;
+    }
+  }
+}
