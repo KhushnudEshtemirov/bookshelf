@@ -134,7 +134,7 @@ const AllBook = () => {
                   xl={2}
                   className="card-container"
                 >
-                  <Card>
+                  <Card className="card-body">
                     <CardHeader
                       avatar={
                         <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
