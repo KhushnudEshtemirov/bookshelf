@@ -71,6 +71,7 @@ const AddBook = () => {
         </Typography>
         <Box component="form" onSubmit={handleSubmit} sx={{ mt: 1 }}>
           <TextField
+            inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }}
             margin="normal"
             required
             fullWidth
